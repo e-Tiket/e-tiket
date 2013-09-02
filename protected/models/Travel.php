@@ -8,15 +8,18 @@
  * @property string $asal
  * @property string $tujuan
  * @property string $mobil
+ * @property integer $harga
  * @property string $jam_berangkat
  * @property string $jam_sampai
  * @property integer $jumlah_seat
  * @property integer $id_agen_travel
  * @property string $keterangan
+ * @property integer $is_active
+ * @property integer $gambar_seat
  *
  * The followings are the available model relations:
- * @property PenumpangTravel[] $penumpangTravels
  * @property AgenTravel $idAgenTravel
+ * @property TravelOrder[] $travelOrders
  */
 class Travel extends MyCActiveRecord
 {
@@ -46,14 +49,14 @@ class Travel extends MyCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('asal, tujuan, jam_berangkat, jam_sampai, jumlah_seat, keterangan', 'required'),
-			array('jumlah_seat, id_agen_travel', 'numerical', 'integerOnly'=>true),
+			array('asal, tujuan, harga, jam_berangkat, jam_sampai, jumlah_seat, keterangan', 'required'),
+			array('harga, jumlah_seat, id_agen_travel, is_active', 'numerical', 'integerOnly'=>true),
 			array('asal, tujuan', 'length', 'max'=>30),
 			array('mobil', 'length', 'max'=>32),
-			array('keterangan', 'length', 'max'=>100),
+			array('keterangan,gambar_seat', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, asal, tujuan, mobil, jam_berangkat, jam_sampai, jumlah_seat, id_agen_travel, keterangan', 'safe', 'on'=>'search'),
+			array('id, asal, tujuan, mobil, harga, jam_berangkat, jam_sampai, jumlah_seat, id_agen_travel, keterangan, is_active', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,8 +68,8 @@ class Travel extends MyCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'penumpangTravels' => array(self::HAS_MANY, 'PenumpangTravel', 'id_travel'),
 			'idAgenTravel' => array(self::BELONGS_TO, 'AgenTravel', 'id_agen_travel'),
+			'travelOrders' => array(self::HAS_MANY, 'TravelOrder', 'id_travel'),
 		);
 	}
 
@@ -80,21 +83,29 @@ class Travel extends MyCActiveRecord
 			'asal' => 'Asal',
 			'tujuan' => 'Tujuan',
 			'mobil' => 'Mobil',
+			'harga' => 'Harga',
 			'jam_berangkat' => 'Jam Berangkat',
 			'jam_sampai' => 'Jam Sampai',
 			'jumlah_seat' => 'Jumlah Seat',
-			'id_agen_travel' => 'Id Agen Travel',
+			'id_agen_travel' => 'Agen Travel',
 			'keterangan' => 'Keterangan',
+			'is_active' => 'Is Active',
+			'gambar_seat' => 'Gambar Seat',
 		);
 	}
 
-        public function dropdownModel(){
-            $results=Yii::app()->db->createCommand()->select()
-                    ->from($this->tableName())
+public function destinationDropdownModel($data=array()){
+            $results=Yii::app()->db->createCommand("
+                        select asal as destination from travel 
+                            group by asal
+                        union
+                        select tujuan as destination from travel 
+                            group by tujuan")
                     ->queryAll();
-            $data=array(''=>'- Pilih Travel -');
+            if(count($data)<=0)
+                $data=array(''=>'- Pilih  -');
             foreach($results as $result){
-                $data[$result['id']]=$result['nama'];
+                $data[$result['destination']]=$result['destination'];
             }
             return $data;
         }
@@ -132,7 +143,7 @@ class Travel extends MyCActiveRecord
                 }
                 $sql=  Yii::app()->db->createCommand()
                         ->from('travel')
-                        ->join('agen_travel','travel.id_agen_travel=agen_travel.id')
+                        ->leftJoin('agen_travel','travel.id_agen_travel=agen_travel.id')
                         ->where('1')
                         ;
                 
@@ -144,13 +155,57 @@ class Travel extends MyCActiveRecord
                         $sql->andWhere("travel.$column like '%$value%'");
                 }
                 $counterSql=  clone $sql;
-                $sql->select("travel.*,agen_travel.nama as agen");
+                $sql->select("travel.*,IFNULL(agen_travel.nama,'-') as agen");
                 $data=new MyCSqlDataProvider($sql->getText());
                 $counterSql->select='count(*) as jumlah';
                 $jumlah=$counterSql->select('count(*) as jumlah')->queryRow();
                 $data->setTotalItemCount($jumlah['jumlah']);
-                $data->setSort(array('attributes'=>array('id','agen','asal','tujuan','mobil','jam_berangkat','jam_sampai','jumlah_seat','id_agen_travel','keterangan')));
+                $data->setSort(array('attributes'=>array('id','agen','asal','tujuan','mobil','jam_berangkat','jam_sampai','jumlah_seat','id_agen_travel','keterangan','harga')));
                 
                 return $data;
 	}
+        function getJadwal($asal,$tujuan,$tanggal,$tanggal_sebelum){
+                $sqlMaster="
+                    select *,date_range.date as tanggal,
+                        (travel.jumlah_seat-ifnull((select sum(travel_order.jumlah_seat) 
+                                from travel_order 
+                                join `order` on `order`.id=travel_order.id_order 
+                                where `order`.status<>'unapproved' and tanggal_berangkat=date_range.date),0)) as sisa_seat 
+                    from travel
+                    join (
+                        select date_range.date
+                        from 
+                        (
+                          select curdate() + INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as date
+                          from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a
+                          cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b
+                          cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
+                        ) date_range
+                    ) date_range
+                    where (date_range.date between '$tanggal' and '$tanggal_sebelum')
+                    having sisa_seat>0
+                ";
+                $sql=  Yii::app()->db->createCommand(
+                            "$sqlMaster and asal='$asal' and tujuan='$tujuan' 
+                            UNION
+                            $sqlMaster and asal like '%$asal%' and tujuan like '%$tujuan%'" 
+                        )
+                        ;
+                
+                
+                $data=new MyCSqlDataProvider($sql->getText());
+                $data->setTotalItemCount(count($sql->queryAll()));
+                $data->setSort(array('attributes'=>array('id','asal','tujuan','tanggal','sisa_seat')));
+                
+                return $data;
+        }
+        public function getSeatTerpakai($id,$tanggal){
+            $jumlah=Yii::app()->db->createCommand("select ifnull(sum(travel_order.jumlah_seat),0) as jumlah
+                                from travel_order 
+                                join `order` on `order`.id=travel_order.id_order 
+                                where `order`.status<>'unapproved' 
+                                    and tanggal_berangkat='$tanggal' 
+                                    and travel_order.id_travel='$id'")->queryRow();
+            return $jumlah['jumlah'];
+        }
 }

@@ -71,12 +71,14 @@ class SiteController extends MyController
                                 Helper::getQuery('id_pelabuhan_tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('tanggal_sebelum'));
                         break;
                     case 'travel':
-                        
+                        $param['travel']=  Travel::model()->getJadwal(Helper::getQuery('id_pelabuhan_awal'), 
+                                Helper::getQuery('id_pelabuhan_tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('tanggal_sebelum'));
+                        break;
                         break;
                 }
-                $destination=$this->requestAPI("https://api.master18.tiket.com/flight_api/all_airport?1=1");
-                $param['airport']=$destination['all_airport']['airport'];
-//                $param['airport']=array();
+//                $destination=$this->requestAPI("https://api.master18.tiket.com/flight_api/all_airport?1=1");
+//                $param['airport']=$destination['all_airport']['airport'];
+                $param['airport']=array();
                 
                 $param['travel']= Travel::model()->findAll();
 		$this->render('index',$param);

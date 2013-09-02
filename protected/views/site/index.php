@@ -46,6 +46,11 @@
                                 'kapal'=>$kapal
                             ));
                         break;
+                    case "travel": 
+                            $this->renderPartial('travel',array(
+//                                'kapal'=>$kapal
+                            ));
+                        break;
                         
                 }
         ?>

@@ -25,7 +25,7 @@ $this->menu=array(
                 'label'=>'Tambah Travel',
                 'url'=>Yii::app()->createUrl('pageadmin/travel/create'),
                 'type'=>'primary',
-                'htmlOptions'=>array('target' => 'ajax-modal')
+                'htmlOptions'=>array('target' => 'ajax-modal','class'=>'modal-large')
         )); ?>    
             </div>
 </div>
@@ -50,6 +50,7 @@ $this->widget('MyCGridView', array(
                     'htmlOptions'=>array('align'=>'center','style'=>'width: 5%')
                 ),
 		'agen::Agen',
+		'harga::Harga',
 		'asal::Asal',
 		'tujuan::Tujuan',
 		'mobil::Mobil',
@@ -68,7 +69,7 @@ $this->widget('MyCGridView', array(
                             'url' => 'Yii::app()->createUrl("pageadmin/travel/view/", array("id"=>$data["id"]))',
                         ),
                         'update'=>array(
-                            'options'=>array('target'=>'ajax-modal','title'=>'Edit'),
+                            'options'=>array('target'=>'ajax-modal','title'=>'Edit','class'=>'modal-large'),
                             'url' => 'Yii::app()->createUrl("pageadmin/travel/update/", array("id"=>$data["id"]))',
                         ),
                         'delete'=>array(
