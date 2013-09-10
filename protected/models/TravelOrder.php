@@ -10,6 +10,7 @@
  * @property integer $harga
  * @property string $nama
  * @property string $alamat
+ * @property string $alamat_tujuan
  * @property string $no_telp
  * @property string $keterangan
  * @property integer $jumlah_seat
@@ -51,7 +52,7 @@ class TravelOrder extends MyCActiveRecord
 			array('harga, jumlah_seat, tanggal_berangkat', 'required'),
 			array('id_order, id_travel, harga, jumlah_seat', 'numerical', 'integerOnly'=>true),
 			array('nama', 'length', 'max'=>50),
-			array('alamat, keterangan', 'length', 'max'=>255),
+			array('alamat,alamat_tujuan, keterangan', 'length', 'max'=>255),
 			array('no_telp', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -85,6 +86,7 @@ class TravelOrder extends MyCActiveRecord
 			'harga' => 'Harga',
 			'nama' => 'Nama',
 			'alamat' => 'Alamat',
+			'alamat_tujuan' => 'Alamat Tujuan',
 			'no_telp' => 'No Telp',
 			'keterangan' => 'Keterangan',
 			'jumlah_seat' => 'Jumlah Seat',
@@ -152,7 +154,7 @@ class TravelOrder extends MyCActiveRecord
                 $counterSql->select='count(*) as jumlah';
                 $jumlah=$counterSql->select('count(*) as jumlah')->queryRow();
                 $data->setTotalItemCount($jumlah['jumlah']);
-                                $data->setSort(array('attributes'=>array('id','id_order','id_travel','harga','nama','alamat','no_telp','keterangan','jumlah_seat','tanggal_berangkat')));
+                $data->setSort(array('attributes'=>array('id','id_order','id_travel','harga','nama','alamat','no_telp','keterangan','jumlah_seat','tanggal_berangkat')));
                 
                 return $data;
 	}

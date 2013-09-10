@@ -30,7 +30,7 @@ class MyController extends ParentController {
     }
 
     function generateToken() {
-        $apiSecretKey = "d87f4147e65331b988555946df8a077f";
+        $apiSecretKey = "510cde17096c924535f37e10ce795d4c";
         $content = file_get_contents("https://api.master18.tiket.com/apiv1/payexpress?method=getToken&secretkey=$apiSecretKey&output=json");
         $content = json_decode($content, true);
         return $content['token'];
@@ -38,8 +38,10 @@ class MyController extends ParentController {
 
     function requestAPI($url) {
         $token = $this->generateToken();
-//        echo $url."&token=$token&output=json";
-        $result = file_get_contents($url . "&token=$token&output=json");
+        $result = @file_get_contents($url . "&token=$token&output=json");
+        if($result==false)    
+            return null;
+//        echo $result.'<br>';
         return json_decode($result, true);
     }
 
@@ -57,6 +59,14 @@ class MyController extends ParentController {
     
     function isLogin(){
         return true;
+    }
+    function pageForCustommerOnly($returnUrl='',$param=array()){
+        if(Helper::getUserLogin()->isCustommer()){
+            return true;
+        }else{
+            $this->noticeInfo("Anda harus login untuk mengakses halaman ini");
+            $this->redirect(Yii::app()->createUrl('user/login',array('urlReturn'=>  Yii::app()->createUrl($returnUrl,$param))));
+        }
     }
 }
 

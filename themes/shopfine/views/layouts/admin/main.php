@@ -9,9 +9,9 @@
                         if (isset($m['param'])) {
                             $param = $m['param'];
                         }
-                        if (isset($m['access'][$userType]) && $m['access'][$userType]) {
+//                        if (isset($m['access'][$userType]) && $m['access'][$userType]) {
                             ?><li class=""><a class="invarseColor" href="<?php echo Yii::app()->createUrl(($this->is_admin?'pageadmin/':'').$m['url'], $param) ?>"><i class="icon-caret-right"></i> <span class="hidden-tablet"><?php echo $m['title'] ?></span></a></li><?php
-                        }
+//                        }
                     }
                 }
                     ?>

@@ -4,7 +4,7 @@
  * This is the model class for table "seat_penumpang_travel".
  *
  * The followings are the available columns in table 'seat_penumpang_travel':
- * @property integer $id_penumpang_travel
+ * @property integer $id_travel_order
  * @property integer $seat_ke
  *
  * The followings are the available model relations:
@@ -38,10 +38,10 @@ class SeatPenumpangTravel extends MyCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_penumpang_travel, seat_ke', 'numerical', 'integerOnly'=>true),
+			array('id_travel_order, seat_ke', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id_penumpang_travel, seat_ke', 'safe', 'on'=>'search'),
+			array('id_travel_order, seat_ke', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,7 +53,7 @@ class SeatPenumpangTravel extends MyCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idPenumpangTravel' => array(self::BELONGS_TO, 'PenumpangTravel', 'id_penumpang_travel'),
+			'idPenumpangTravel' => array(self::BELONGS_TO, 'PenumpangTravel', 'id_travel_order'),
 		);
 	}
 
@@ -63,7 +63,7 @@ class SeatPenumpangTravel extends MyCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_penumpang_travel' => 'Id Penumpang Travel',
+			'id_travel_order' => 'Id Penumpang Travel',
 			'seat_ke' => 'Seat Ke',
 		);
 	}
@@ -90,7 +90,7 @@ class SeatPenumpangTravel extends MyCActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id_penumpang_travel',$this->id_penumpang_travel);
+		$criteria->compare('id_travel_order',$this->id_travel_order);
 		$criteria->compare('seat_ke',$this->seat_ke);
 
 		return new CActiveDataProvider($this, array(

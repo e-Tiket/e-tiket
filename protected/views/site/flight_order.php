@@ -66,8 +66,9 @@
     }
 
     if (!Helper::getUserLogin()->isLogin()) {
-        ?><div class="alert alert-info">Untuk mempermudah pembelian tiket, silakan login terlebih dahulu!</div><?php
-    $this->renderPartial('//user/login', array('urlReturn' => Yii::app()->createUrl('site/flightOrder')));
+        ?><div class="alert alert-info">Untuk mempermudah pembelian tiket, silakan 
+            <a href="<?php echo Yii::app()->createUrl('user/login')?>" target="ajax-modal"><b>login</b></a>
+            terlebih dahulu!</div><?php
 } else {
     ?>
 

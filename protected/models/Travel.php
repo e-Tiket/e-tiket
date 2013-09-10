@@ -164,7 +164,11 @@ public function destinationDropdownModel($data=array()){
                 
                 return $data;
 	}
-        function getJadwal($asal,$tujuan,$tanggal,$tanggal_sebelum){
+        function getJadwal($asal,$tujuan,$tanggal,$tanggal_sebelum,$jumlah=null){
+            $having="1=1";
+            if($jumlah!=null || $jumlah!=''){
+                $having.=" and sisa_seat>=$jumlah";
+            }
                 $sqlMaster="
                     select *,date_range.date as tanggal,
                         (travel.jumlah_seat-ifnull((select sum(travel_order.jumlah_seat) 
@@ -183,29 +187,59 @@ public function destinationDropdownModel($data=array()){
                         ) date_range
                     ) date_range
                     where (date_range.date between '$tanggal' and '$tanggal_sebelum')
-                    having sisa_seat>0
                 ";
                 $sql=  Yii::app()->db->createCommand(
                             "$sqlMaster and asal='$asal' and tujuan='$tujuan' 
+                                having sisa_seat>0 and $having
                             UNION
-                            $sqlMaster and asal like '%$asal%' and tujuan like '%$tujuan%'" 
+                            $sqlMaster and asal like '%$asal%' and tujuan like '%$tujuan%' 
+                                having sisa_seat>0 and $having" 
                         )
                         ;
                 
-                
+//                echo $sql->getText();
                 $data=new MyCSqlDataProvider($sql->getText());
                 $data->setTotalItemCount(count($sql->queryAll()));
                 $data->setSort(array('attributes'=>array('id','asal','tujuan','tanggal','sisa_seat')));
                 
                 return $data;
         }
-        public function getSeatTerpakai($id,$tanggal){
+        /**
+         * @return int jumlah seat tidak terpakai
+         */
+        public function getSeatTerpakai($id_travel,$tanggal){
             $jumlah=Yii::app()->db->createCommand("select ifnull(sum(travel_order.jumlah_seat),0) as jumlah
                                 from travel_order 
                                 join `order` on `order`.id=travel_order.id_order 
                                 where `order`.status<>'unapproved' 
                                     and tanggal_berangkat='$tanggal' 
-                                    and travel_order.id_travel='$id'")->queryRow();
+                                    and travel_order.id_travel='$id_travel'")->queryRow();
             return $jumlah['jumlah'];
+        }
+        /**
+         * @return int list seat yang tidak terpakai
+         */
+        public function getSeatListTidakTerpakai($id_travel,$tanggal){
+            $seatTerpakai=  Yii::app()->db->createCommand("
+                select seat_penumpang_travel.seat_ke 
+                from seat_penumpang_travel
+                    join travel_order on travel_order.id=seat_penumpang_travel.id_travel_order
+                    join `order` on `order`.id=travel_order.id_order and `order`.status<>'unapproved'
+                where travel_order.id_travel='$id_travel' and travel_order.tanggal_berangkat='$tanggal'
+            ")->queryAll();
+            $travel=$this->findByPk($id_travel);
+            $seatList=array();
+            for($i=1;$i<=$travel->jumlah_seat;$i++){
+                $isFound=false;
+                foreach($seatTerpakai as $seat){
+                    if($seat['seat_ke']==$i){
+                        $isFound=true;
+                    }
+                }
+                if(!$isFound){
+                    $seatList[$i]=$i;
+                }
+            }
+            return $seatList;
         }
 }

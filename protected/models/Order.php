@@ -12,12 +12,14 @@
  * @property integer $id_custommer
  * @property string $waktu
  * @property integer $total_tagihan
+ * @property string $status
+ * @property string $jenis_order
  *
  * The followings are the available model relations:
  * @property FlightOrder[] $flightOrders
  * @property KapalOrder[] $kapalOrders
  * @property Custommer $idCustommer
- * @property PenumpangTravel[] $penumpangTravels
+ * @property TravelOrder[] $travelOrders
  */
 class Order extends MyCActiveRecord
 {
@@ -47,14 +49,16 @@ class Order extends MyCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('waktu', 'required'),
+			array('waktu, jenis_order', 'required'),
 			array('bayar_total, id_custommer, total_tagihan', 'numerical', 'integerOnly'=>true),
 			array('bayar_via', 'length', 'max'=>32),
 			array('bayar_bank', 'length', 'max'=>20),
 			array('pay_keterangan', 'length', 'max'=>50),
+			array('status', 'length', 'max'=>10),
+			array('jenis_order', 'length', 'max'=>6),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, bayar_via, bayar_bank, bayar_total, pay_keterangan, id_custommer, waktu, total_tagihan', 'safe', 'on'=>'search'),
+			array('id, bayar_via, bayar_bank, bayar_total, pay_keterangan, id_custommer, waktu, total_tagihan, status, jenis_order', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,7 +73,7 @@ class Order extends MyCActiveRecord
 			'flightOrders' => array(self::HAS_MANY, 'FlightOrder', 'id_order'),
 			'kapalOrders' => array(self::HAS_MANY, 'KapalOrder', 'id_order'),
 			'idCustommer' => array(self::BELONGS_TO, 'Custommer', 'id_custommer'),
-			'penumpangTravels' => array(self::HAS_MANY, 'PenumpangTravel', 'id_order'),
+			'travelOrders' => array(self::HAS_MANY, 'TravelOrder', 'id_order'),
 		);
 	}
 
@@ -87,6 +91,8 @@ class Order extends MyCActiveRecord
 			'id_custommer' => 'Id Custommer',
 			'waktu' => 'Waktu',
 			'total_tagihan' => 'Total Tagihan',
+			'status' => 'Status',
+			'jenis_order' => 'Jenis Order',
 		);
 	}
 
@@ -94,7 +100,7 @@ class Order extends MyCActiveRecord
             $results=Yii::app()->db->createCommand()->select()
                     ->from($this->tableName())
                     ->queryAll();
-            $data=array(''=>'- Pilih  -');
+            $data=array(''=>'- Pilih Order -');
             foreach($results as $result){
                 $data[$result['id']]=$result['nama'];
             }
@@ -105,7 +111,7 @@ class Order extends MyCActiveRecord
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
-	public function search()
+	public function search2()
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
@@ -120,9 +126,45 @@ class Order extends MyCActiveRecord
 		$criteria->compare('id_custommer',$this->id_custommer);
 		$criteria->compare('waktu',$this->waktu,true);
 		$criteria->compare('total_tagihan',$this->total_tagihan);
+		$criteria->compare('status',$this->status,true);
+		$criteria->compare('jenis_order',$this->jenis_order,true);
 
-		return new CActiveDataProvider($this, array(
+		return new MyCActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+        /**
+         * 
+         * @param type $id_custommer
+         * @param array $searchParam
+         * @return \MyCSqlDataProvider
+         */
+	public function search($id_custommer=null,$searchParam=array())
+	{
+		if($searchParam==null){
+                    $searchParam=array();
+                }
+                $sql=  Yii::app()->db->createCommand()
+                        ->from('order')
+                        ->where('1')
+                        ;
+                if($id_custommer!=null){
+                    $sql->andWhere("id_custommer='$id_custommer'");
+                }
+                foreach($searchParam as $column=>$value){
+                    if($value=='')continue;
+                    if(strpos($column, '.id')>0 || substr($column, 0,2)=='id'){
+                        $sql->andWhere("$column ='$value'");
+                    }else
+                        $sql->andWhere("order.$column like '%$value%'");
+                }
+                $counterSql=  clone $sql;
+                $sql->select("order.*");
+                $data=new MyCSqlDataProvider($sql->getText());
+                $counterSql->select='count(*) as jumlah';
+                $jumlah=$counterSql->select('count(*) as jumlah')->queryRow();
+                $data->setTotalItemCount($jumlah['jumlah']);
+                                $data->setSort(array('attributes'=>array('id','bayar_via','bayar_bank','bayar_total','pay_keterangan','id_custommer','waktu','total_tagihan','status','jenis_order')));
+                return $data;
 	}
 }

@@ -3,7 +3,8 @@
 </div>
 <?php $this->widget('MyCGridView', array(
 	'id'=>'pemberangkatan-kapal-grid',
-	'dataProvider'=>  Travel::model()->getJadwal(Helper::getQuery("asal"),Helper::getQuery("tujuan"),Helper::getQuery("tanggal"),Helper::getQuery("tanggal_sebelum")),
+	'dataProvider'=>Travel::model()->getJadwal(Helper::getQuery('asal'), 
+                                Helper::getQuery('tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('tanggal_sebelum'),Helper::getQuery('jumlah')),
         'itemsCssClass'=>'table ',
         'summaryText'=>'',
 	//'filter'=>$model,
@@ -29,8 +30,8 @@
                     'htmlOptions'=>array('width'=>'75px'),
                     'buttons'=>array(
                         'tarif'=>array(
-                            'options'=>array('target'=>'ajax-modal','title'=>'','class'=>'btn btn-primary btn-large'),
-                            'url' => 'Yii::app()->createUrl("travel/orderNow", array("id"=>$data["id"],"tanggal"=>$data["tanggal"]))',
+                            'options'=>array('target'=>'','title'=>'','class'=>'btn btn-primary btn-large modal-large'),
+                            'url' => 'Yii::app()->createUrl("travel/travelOrder", array("id"=>$data["id"],"tanggal"=>$data["tanggal"]))',
                             'label'=>'Pesan',
                         ),
                     ),

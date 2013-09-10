@@ -151,11 +151,12 @@
     <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/tambahan/dialog.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('.chosen').chosen();
+            $('.chosen').chosen({ search_contains: true });
         })
     </script>
     
-    
+    <?php $this->beginContent('//layouts/live_chat'); ?>
+<?php $this->endContent(); ?>
 </body>
 
 </html>

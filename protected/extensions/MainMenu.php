@@ -11,6 +11,7 @@ class MainMenu extends CMenu{
                 'menu'=>array(
                     array('title'=>'Admin','url'=>'admin','access'=>array('admin'=>1)),
                     array('title'=>'Agen Travel','url'=>'agenTravel','access'=>array('admin'=>1)),
+                    array('title'=>'Travel','url'=>'travel','access'=>array('admin'=>1)),
                     array('title'=>'Artikel','url'=>'artikel','access'=>array('admin'=>1)),
                     array('title'=>'Custommer','url'=>'custommer','access'=>array('admin'=>1)),
                     array('title'=>'Kapal','url'=>'kapal','access'=>array('admin'=>1)),
@@ -19,6 +20,7 @@ class MainMenu extends CMenu{
                     array('title'=>'Paket Tour','url'=>'paketTour','access'=>array('admin'=>1)),
                     array('title'=>'Pelabuhan','url'=>'pelabuhan','access'=>array('admin'=>1)),
                     array('title'=>'Pemberangkatan Kapal','url'=>'pemberangkatanKapal','access'=>array('admin'=>1)),
+                    array('title'=>'Setting Harga Pesawat','url'=>'flightPrice','access'=>array('admin'=>1)),
                 ),
             ),
         );

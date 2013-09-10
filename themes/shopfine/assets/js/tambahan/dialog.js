@@ -133,10 +133,15 @@ function ajaxModal(url,el){
 //                    return window.pageYOffset;
 //                }
 //    });
-  if($(el).hasClass('modal-max')){
+  if($(el).hasClass('modal-large')){
 //      $('#myModelDialog').addClass('modal-max');
-      $('#myModelDialog').css({'width':'900px'});
+      $('#myModelDialog').css({
+                'width':'820px'
+                ,'left':'45%'
+            });
       console.log('tess');
+  }else{
+      $('#myModelDialog').css({'width':''});
   }
   
   $('#myModelDialog').html();

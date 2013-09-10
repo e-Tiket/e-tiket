@@ -2,7 +2,7 @@
         <div class="checkout-header login-form"><h4><i class='icon icon-user'></i> Login</h4></div>
         <div class="checkout-content login-form" >
             <form name="login-form" action="<?php echo Yii::app()->createUrl('user/login', array('urlReturn'=>$urlReturn))?>" method="POST">
-                <table>
+                <table style="width: 100%">
                     <tr>
                         <td>Username</td>
                         <td><input type="text" value="" name='login[username]' class='required'></td>
@@ -19,8 +19,8 @@
                             </label>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Belum punya akun? <a href='<?php echo Yii::app()->homeUrl;?>' id='daftar-link' class="to-togle">Daftar</a></td>
+                    <tr class="modal-footer">
+                        <td align="left">Belum punya akun? <a href='<?php echo Yii::app()->homeUrl;?>' id='daftar-link' class="to-togle">Daftar</a></td>
                         <td style="text-align: right"><button class='btn btn-primary'>Login</button></td>
                     </tr>
                 </table>
@@ -61,8 +61,8 @@
                         <td>Alamat</td>
                         <td><textarea name='daftar[alamat]' rows='3' class='span3'></textarea></td>
                     </tr>
-                    <tr>
-                        <td>Sudah punya akun? <a href='<?php echo Yii::app()->homeUrl;?>' id='login-link' class="to-togle">Login</a></td>
+                    <tr class="modal-footer">
+                        <td align="left">Sudah punya akun? <a href='<?php echo Yii::app()->homeUrl;?>' id='login-link' class="to-togle">Login</a></td>
                         <td style="text-align: right"><button class='btn btn-primary'>Daftar</button></td>
                     </tr>
                 </table>

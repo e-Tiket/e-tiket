@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row-fluid">
     <div class="span3" >
         <div class="search">
             <div class="tabbable"> <!-- Only required for left/right tabs -->
@@ -11,7 +11,7 @@
                     <div class="tab-pane <?php echo ($search_type=='flight' || $search_type=='')?'active':''?>" id="tab1">
                         <p><?php $this->renderPartial('flight_form',array('airport'=>$airport,'from'=>$from,'to'=>$to,'tanggal_berangkat'=>$tanggal_berangkat,'tanggal_pulang'=>$tanggal_pulang))?></p>
                     </div>
-                    <div class="tab-pane <?php echo ($search_type=='travel')?'active':''?>" id="tab2">
+                    <div class="tab-pane <?php echo ($search_type=='travel')?'active':''?>" id="tab2" style="">
                         <p><?php $this->renderPartial('travel_form',array('travel'=>$travel))?></p>
                     </div>
                     <div class="tab-pane <?php echo ($search_type=='kapal')?'active':''?>" id="tab3">
@@ -48,7 +48,7 @@
                         break;
                     case "travel": 
                             $this->renderPartial('travel',array(
-//                                'kapal'=>$kapal
+                                'travel'=>$travel
                             ));
                         break;
                         

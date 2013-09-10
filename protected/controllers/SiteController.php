@@ -25,7 +25,13 @@ class SiteController extends MyController
 			),
 		);
 	}
+        public function actionTesFlightOrder(){
+            $url="http://api.master18.tiket.com/flight_api/get_flight_data?flight_id=3378211&date=2013-09-18";
+            $param=$this->requestAPI($url);    
+            $this->show_array($param);
+        }
         public function actionFlightOrder(){
+            $param=array();
             //jika sebelumnya sudah pernah mengisi,/tersimpan di session dan tidak ada input baru
             if(!$_POST && Yii::app()->session['flightOrder']){
                 $_POST=Yii::app()->session['flightOrder'];
@@ -39,8 +45,25 @@ class SiteController extends MyController
                 $this->noticeInfo("Tiket pesawat belum dipilih");
                 $this->redirect(Yii::app()->createUrl('site/index#tab1'));
             }
-            $this->show_array($_POST);
-            $this->renderModal('flight_order',array('data'=>$_POST));
+            if(isset($_POST['go'])){
+                $url="http://api.master18.tiket.com/flight_api/get_flight_data?flight_id=".$_POST['go']['flight_id']."&date=".$_POST['search_param']['tanggal_berangkat'];
+                $param['go']=$this->requestAPI($url);
+                $this->show_array($param['go']);
+                if($param['go']==null){
+                    $this->notice2(false, '', "Jadwal Penerbangan tidak ditemukan");
+                }
+            }
+            if(isset($_POST['ret'])){
+                $url="http://api.master18.tiket.com/flight_api/get_flight_data?flight_id=".$_POST['ret']['flight_id']."&date=".$_POST['search_param']['tanggal_pulang'];
+                $param['ret']=$this->requestAPI($url);
+                if($param['ret']==null){
+                    $this->notice2(false, '', "Jadwal Penerbangan tidak ditemukan");
+                }
+            }
+            $param['data']=$_POST;
+            $this->show_array(array($param['go']));
+            $this->show_array(array($param['ret']));exit;
+            $this->renderModal('flight_order',$param);
         }
         
 	/**
@@ -60,7 +83,7 @@ class SiteController extends MyController
                             $url="http://api.master18.tiket.com/search/flight?d=$_GET[from]&a=$_GET[to]&date=".($_GET['tanggal_berangkat'])."&ret_date=".($_GET['tanggal_pulang'])."&adult=$_GET[dewasa]&child=$_GET[anak]&infant=$_GET[bayi]&v=4";
 //                            echo $url;exit;
                             $param['flight']            =$this->requestAPI($url);
-                            $this->show_array($param['flight']);exit;
+//                            $this->show_array($param['flight']);exit;
                             $param['to']                =$_GET['to'];
                             $param['from']              =$_GET['from'];
                             $param['tanggal_berangkat'] =$_GET['tanggal_berangkat'];
@@ -71,14 +94,14 @@ class SiteController extends MyController
                                 Helper::getQuery('id_pelabuhan_tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('tanggal_sebelum'));
                         break;
                     case 'travel':
-                        $param['travel']=  Travel::model()->getJadwal(Helper::getQuery('id_pelabuhan_awal'), 
-                                Helper::getQuery('id_pelabuhan_tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('tanggal_sebelum'));
+                        $param['travel']=  Travel::model()->getJadwal(Helper::getQuery('asal'), 
+                                Helper::getQuery('tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('tanggal_sebelum'),Helper::getQuery('jumlah'));
                         break;
                         break;
                 }
-//                $destination=$this->requestAPI("https://api.master18.tiket.com/flight_api/all_airport?1=1");
-//                $param['airport']=$destination['all_airport']['airport'];
-                $param['airport']=array();
+                $destination=$this->requestAPI("https://api.master18.tiket.com/flight_api/all_airport?1=1");
+                $param['airport']=$destination['all_airport']['airport'];
+//                $param['airport']=array();
                 
                 $param['travel']= Travel::model()->findAll();
 		$this->render('index',$param);
@@ -118,5 +141,15 @@ class SiteController extends MyController
 		}
 		$this->render('contact',array('model'=>$model));
 	}
+        public function actionOrderHistory(){
+            $this->pageForCustommerOnly('/site/orderHistory');
+            $user=  Helper::getUserLogin()->getUserProfile();
+            $param['orderList']=  Order::model()->search($user['id'],Yii::app()->request->getQuery('Order',array()));
+            
+            $this->render('order_history',$param);
+        }
+        public function actionPembayaran(){
+            $this->render('pembayaran');
+        }
         
 }

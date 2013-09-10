@@ -39,7 +39,7 @@
     <?php if(isset($flight['ret_det'])){?>
     <div class="tab-pane" id="pulangTab">
         <?php 
-            if(count($flight['returns']['result'])>0)
+            if(isset($flight['returns']['result'])&&count($flight['returns']['result'])>0)
                 showFlightResult($flight['returns']['result'],'return');
             else{
                 ?><div class="alert alert-danger">Jadwal tidak ditemukan</div><?php
@@ -66,6 +66,7 @@
             <?php
             $i=-1;
             foreach ($flight as $f) { $i++;
+                $flightPrice=FlightPrice::model()->getFlightPriceByFlightNumber($f['flight_number']);
                 ?>
                 <tr>
                     <td>
@@ -74,9 +75,15 @@
                     <td><?php echo $f['simple_departure_time']; ?></td>
                     <td><?php echo $f['simple_arrival_time']; ?></td>
                     <td><?php echo $f['duration']; ?></td>
-                    <td><?php echo Helper::rupiah($f['price_adult']); ?></td>
                     <td>
-                        <button class="btn btn-small btn-success" data-title="Edit" data-placement="top" rel="tooltip" onclick="pilihPesawat(<?php echo "'$i','$type'";?>)"><i class="icon-plus"></i> Pesan</button>
+                        <span style="font-size: 1.2em"><?php echo Helper::rupiah($f['price_adult']+$flightPrice['harga_naik']-$flightPrice['harga_turun']); ?></span>
+                        <?php if($flightPrice['harga_turun']>0){?>
+                            <br>
+                            <span style="color: #c90101;text-decoration: line-through;font-size: 0.7em"><?php echo Helper::rupiah($f['price_adult']+$flightPrice['harga_naik'])?></span>
+                        <?php }?>
+                    </td>
+                    <td>
+                        <a class="btn btn-small btn-success" href="#" data-title="Edit" data-placement="top" rel="tooltip" onclick="pilihPesawat(<?php echo "'$i','$type'";?>)"><i class="icon-plus"></i> Pesan</a>
                     </td>
                 </tr>    
                 <?php
@@ -100,9 +107,25 @@
     function pilihPesawat(index,type){
         var flightSelected=null;
         if(type=='go'){
-            isGoSelected=true;
-            goFlightSelected=flightData.departures.result[index];
-            showFlightSelected(goFlightSelected,'go');
+                $.ajax({
+                    url:'<?php echo Yii::app()->createUrl('flight/cekPenerbangan') ?>',
+                    data:decodeURIComponent($.param(flightData.departures.result[index]))+'&'+decodeURIComponent($.param(jsonFlight.search_param)),
+                    cache: false,
+                    dataType: 'json',
+                    type:'POST',
+                    success:function (data){
+                        if(data.success){
+                            isGoSelected=true;
+                            goFlightSelected=flightData.departures.result[index];
+                            showFlightSelected(goFlightSelected,'go');
+                        }else{
+                            noticeFailed("Penerbangan tidak ditemukan");
+                        }
+                    },error:function(){
+                        noticeFailed("Cek data gagal dilakukan");
+                    }
+                });
+            
         }else{//return
             isRetSelected=true;
             retFlightSelected=flightData.returns.result[index];
@@ -149,9 +172,13 @@
                 </table>'+
         '</div>';
         if(type=='go'){
+            $('#goFlightSelected').hide(500);
             $('#goFlightSelected').html(str);
+            $('#goFlightSelected').show(500);
         }else{
+            $('#returnFlightSelected').hide(500);
             $('#returnFlightSelected').html(str);
+            $('#returnFlightSelected').show(500);
         }
         var jumlah=0;
         $('.jumlahBayar').each(function(index){

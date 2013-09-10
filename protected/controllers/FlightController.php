@@ -46,6 +46,16 @@ class FlightController extends MyController{
             }
         }
     }
+    public function actionCekPenerbangan(){
+//        $this->show_array($_POST);exit;
+        $url="http://api.master18.tiket.com/flight_api/get_flight_data?flight_id=".$_POST['flight_id']."&date=".$_POST['tanggal_berangkat'];
+        $param['go']=$this->requestAPI($url);
+        if($param['go']==null || (isset($param['go']['diagnostic']['error_msgs']) && $param['go']['diagnostic']['error_msgs']!='')){
+            echo json_encode(array('success'=>false));
+        }else
+            echo json_encode(array('success'=>true));
+//        $this->show_array($param);
+    }
 }
 
 ?>

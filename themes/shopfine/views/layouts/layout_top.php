@@ -36,6 +36,8 @@
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/font-awesome.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/style.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/chosen.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/mycustom.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/bootstrap-select.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/jquery.validate.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/flexslider.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/jquery.autocomplete.css">
@@ -60,6 +62,7 @@
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/jquery.autocomplete.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/tiny_mce/jquery.tinymce.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/custom.js"></script>
+        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/bootstrap-select.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/jquery.validate.js"></script>
          <script type="text/javascript">
 $().ready(function() {
@@ -108,19 +111,19 @@ $().ready(function() {
 			<div class="upperHeader">
 				<div class="container">
 					<ul class="pull-right inline">
-						<li><a class="invarseColor" href="#">My Account</a></li>
+                                            <?php if(Helper::getUserLogin()->isLogin()){?>
+                                            <li><a class="invarseColor" href="<?php echo Yii::app()->createUrl('site/myAccount')?>">My Account</a></li>
 						<li class="divider-vertical"></li>
-						<li><a class="invarseColor" href="#">My Wish List (5)</a></li>
+                                            <?php }?>    
+                                            <?php if(Helper::getUserLogin()->isLogin()){?>
+                                            <li><a class="invarseColor" href="<?php echo Yii::app()->createUrl('site/orderHistory')?>">History</a></li>
 						<li class="divider-vertical"></li>
-						<li><a class="invarseColor" href="#">Shoping Cart</a></li>
-						<li class="divider-vertical"></li>
-						<li><a class="invarseColor" href="#">Checkout</a></li>
-						<li class="divider-vertical"></li>
-                                                <?php
+                                            <?php }?>    
+                                            <?php
                                                 if(Helper::getUserLogin()->isLogin()){
                                                     echo '<li><a class="invarseColor" href="'.Yii::app()->createUrl('user/logout').'">Logout</a></li>';
                                                 }
-                                                ?>
+                                            ?>
 						
 					</ul>
 					<p>
