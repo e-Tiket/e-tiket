@@ -12,18 +12,14 @@
                     'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
                     'htmlOptions'=>array('align'=>'center','style'=>'width: 5%')
                 ),
-		'bayar_via::Bayar Via',
-		'bayar_bank::Bayar Bank',
-		'bayar_total::Bayar Total',
-		'pay_keterangan::Pay Keterangan',
-                array(
+                'waktu::Waktu',
+		'status::Status',
+		'jenis_order::Jenis Order',
+            array(
                     'header'=>'Total Tagihan',
                     'value'=>'Helper::rupiah($data["total_tagihan"],false)',
                     'htmlOptions'=>array('align'=>'right','style'=>'text-align:right')
                 ),
-		'status::Status',
-		'jenis_order::Jenis Order',
-                'waktu::Waktu',
 		array(
                     'class'=>'MyCButtonColumn',
                     'buttons'=>array(

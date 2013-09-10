@@ -42,11 +42,13 @@
                         }
                         break;
                     case "kapal": 
+                        if(isset($kapal))
                             $this->renderPartial('kapal',array(
                                 'kapal'=>$kapal
                             ));
                         break;
                     case "travel": 
+                        if(isset($travel))
                             $this->renderPartial('travel',array(
                                 'travel'=>$travel
                             ));

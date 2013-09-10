@@ -71,10 +71,3 @@ $this->menu=array(
 		),
 	),
 )); ?>
-
-
- <?php 
-    $this->renderPartial('_search',array(
-            'model'=>$model,
-    )); 
-    ?>    

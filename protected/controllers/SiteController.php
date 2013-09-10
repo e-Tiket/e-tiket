@@ -74,10 +74,9 @@ class SiteController extends MyController
 	{
                 $param=array(
                     'to'=>'','from'=>'',
-                    'search_type'=>isset($_GET['search_type'])?$_GET['search_type']:'',
                     'tanggal_berangkat'=>'','tanggal_pulang'=>'',
                 );
-                
+                $param['search_type']=isset($_GET['search_type'])?$_GET['search_type']:'';
                 switch ($param['search_type']){
                     case "flight": 
                             $url="http://api.master18.tiket.com/search/flight?d=$_GET[from]&a=$_GET[to]&date=".($_GET['tanggal_berangkat'])."&ret_date=".($_GET['tanggal_pulang'])."&adult=$_GET[dewasa]&child=$_GET[anak]&infant=$_GET[bayi]&v=4";
@@ -104,6 +103,7 @@ class SiteController extends MyController
 //                $param['airport']=array();
                 
                 $param['travel']= Travel::model()->findAll();
+                $param['search_type']=isset($_GET['search_type'])?$_GET['search_type']:Helper::getQuery('tab');
 		$this->render('index',$param);
 
 	}

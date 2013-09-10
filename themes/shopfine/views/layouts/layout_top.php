@@ -260,7 +260,7 @@ $().ready(function() {
                                             <?php
                                             foreach ($this->widget('ext.MainMenu')->getSiteMenu() as $menu) {
                                                 ?><li class="">
-                                                    <a href="<?php echo Yii::app()->createUrl($menu['url']) ?>">
+                                                    <a href="<?php echo Yii::app()->createUrl($menu['url'],$menu['param']) ?>">
                                                         <?php echo (isset($menu['icon']) && $menu['icon']!='')?"<i class='$menu[icon]'></i>":''?> 
                                                             <?php echo $menu['title'] ?>
                                                     </a>
