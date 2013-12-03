@@ -21,12 +21,16 @@ class MainMenu extends CMenu{
                     array('title'=>'Pelabuhan','url'=>'pelabuhan','access'=>array('admin'=>1)),
                     array('title'=>'Pemberangkatan Kapal','url'=>'pemberangkatanKapal','access'=>array('admin'=>1)),
                     array('title'=>'Setting Harga Pesawat','url'=>'flightPrice','access'=>array('admin'=>1)),
+                    array('title'=>'File Manager','url'=>'admin/filemanager','access'=>array('admin'=>1)),
                 ),
             ),
         );
     }
     function getAdminMenu(){
         return $this->menu;
+    }
+    public function getMenu(){
+        return $this->getAdminMenu();
     }
     function getSiteMenu(){
         return array(

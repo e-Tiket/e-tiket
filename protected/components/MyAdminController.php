@@ -26,6 +26,8 @@ class MyAdminController extends ParentController {
         if(empty($_GET['ajax'])){
             $_GET['ajax']=0;
         }
+        $this->layout='//layouts/rootContent';
+        Yii::app()->theme = 'katniss';
     }
     function show_array($array){
         echo "<pre>";

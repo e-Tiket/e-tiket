@@ -16,7 +16,7 @@ $form = $this->beginWidget('MyCActiveForm', array(
     <a class="close" data-dismiss="modal">&times;</a>
     <h3><?php echo $model->isNewRecord ? 'Tambah' : 'Edit' ?> Travel </h3>
 </div>
-<div class="modal-body" style="width: 700px">
+<div class="modal-body" >
     <div class="form">    
         <fieldset>
             <?php echo $form->errorSummary($model); ?>

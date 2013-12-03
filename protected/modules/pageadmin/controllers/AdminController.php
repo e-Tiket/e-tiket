@@ -31,7 +31,7 @@ class AdminController extends MyAdminController
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','filemanager'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -192,4 +192,7 @@ class AdminController extends MyAdminController
 			Yii::app()->end();
 		}
 	}
+        public function actionFileManager(){
+            $this->renderModal('file_manager');
+        }
 }

@@ -29,6 +29,8 @@ return array(
 //                        ),
 		),
                 'pageadmin',
+                'blog',
+                'gallery'
 	),
 
 	// application components
@@ -49,6 +51,8 @@ return array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
+                                'login' => 'home/login',
+                                'blog/<slug:[\w\_-]+>' => 'blog/default/article',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

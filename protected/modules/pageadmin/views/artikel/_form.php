@@ -38,7 +38,8 @@
 	<!--<div class="control-group">-->
 		<?php // echo $form->labelEx($model,'isi',array('class'=>'control-label')); ?>
                 <!--<div class="controls">-->
-                    <?php echo $form->textArea($model,'isi',array('rows'=>6, 'cols'=>80,'class'=>'cleditor')); ?>
+                <a href="<?php echo Yii::app()->createUrl('pageadmin/admin/filemanager')?>" target="ajax-modal" class="btn btn-primary modal-large">View Filemanager</a>
+                    <?php echo $form->textArea($model,'isi',array('rows'=>35, 'cols'=>80,'class'=>'cleditor tinymce')); ?>
                     <?php echo $form->error($model,'isi'); ?>
                 <!--</div>-->    
 	<!--</div>-->

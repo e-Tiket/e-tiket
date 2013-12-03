@@ -49,7 +49,6 @@ $this->menu=array(
                     'htmlOptions'=>array('align'=>'center','style'=>'width: 5%')
                 ),
 		'username',
-		'password',
 		'nama',
 		'alamat',
 		'no_telp',
@@ -63,6 +62,9 @@ $this->menu=array(
                         'update'=>array(
                             'options'=>array('target'=>'ajax-modal','title'=>'Edit')
                         ),
+                        'delete'=>array(
+                            'visible'=>'$data->id!=1'
+                        )
                     ),
                     'header'=>'Action'
 		),

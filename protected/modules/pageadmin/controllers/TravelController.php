@@ -66,11 +66,9 @@ class TravelController extends MyAdminController
 	{
 		$model=new Travel;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Travel']))
 		{
+//                    $this->show_array($_FILES);exit;
 			$model->attributes=$_POST['Travel'];
                         $is_success=$model->save();
                         $model->gambar_seat=CUploadedFile::getInstance($model,'gambar_seat');
