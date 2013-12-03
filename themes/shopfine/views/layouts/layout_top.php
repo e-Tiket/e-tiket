@@ -42,6 +42,8 @@
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/flexslider.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/jquery.autocomplete.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/fancybox/jquery.fancybox.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/elfinder/css/elfinder.min.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/elfinder/css/theme.css">
 <!--	<link rel="shortcut icon" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/images/favicon.html">
 	<link rel="apple-touch-icon" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/images/apple-touch-icon.html">
 	<link rel="apple-touch-icon" sizes="72x72" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/images/apple-touch-icon-72x72.html">
@@ -64,6 +66,7 @@
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/custom.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/bootstrap-select.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/jquery.validate.js"></script>
+        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/elfinder/elfinder.min.js"></script>
          <script type="text/javascript">
 $().ready(function() {
                 $('textarea.tinymce').tinymce({
@@ -76,7 +79,7 @@ $().ready(function() {
 
                     // Theme options
                     theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                    theme_advanced_buttons2 : "cut,copy,paste,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,cleanup,code,preview,|,forecolor,backcolor",
+                    theme_advanced_buttons2 : "cut,copy,paste,pasteword,|,fullscreen,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,cleanup,code,preview,|,forecolor,backcolor,image",
 //                    theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
 //                    theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
                     theme_advanced_toolbar_location : "top",
