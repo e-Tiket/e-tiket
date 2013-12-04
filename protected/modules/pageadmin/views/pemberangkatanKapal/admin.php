@@ -81,7 +81,7 @@ $this->menu=array(
                             'url' => 'Yii::app()->createUrl("pageadmin/pemberangkatanKapal/delete/", array("id"=>$data["id"]))',
                         ),
                         'duplicate'=>array(
-                            'options'=>array('target'=>'ajax-modal','title'=>'Gandakan','class'=>'icon-copy'),
+                            'options'=>array('target'=>'ajax-modal','title'=>'Gandakan','class'=>'icon-folder-open'),
                             'url' => 'Yii::app()->createUrl("pageadmin/pemberangkatanKapal/duplicate/", array("id"=>$data["id"]))',
                             'label'=>''
                         ),

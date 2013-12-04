@@ -65,7 +65,7 @@
                             $param = $m['param'];
                         }
                         if ($userType=="admin" || ($userType=="operator" && $m['access']['admin']==0)) {
-                            ?><li class=""><a class="ajax-link" href="<?php echo Yii::app()->createUrl('pageadmin/'.$m['url'], $param) ?>"><i class="icon-th-list"></i> <span class="hidden-tablet"><?php echo $m['title'] ?></span></a></li><?php
+                            ?><li class=""><a class="ajax-link" href="<?php echo Yii::app()->createUrl($m['url'], $param) ?>"><i class="icon-th-list"></i> <span class="hidden-tablet"><?php echo $m['title'] ?></span></a></li><?php
                         }
                     }
                 }

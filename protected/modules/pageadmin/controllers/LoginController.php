@@ -12,7 +12,7 @@ class LoginController extends MyAdminController
 	 */
 	public function actionLogin()
 	{
-            
+            Yii::app()->theme = 'shopfine';
 		$model=new LoginForm;
 
 		// if it is ajax validation request

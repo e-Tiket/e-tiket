@@ -25,7 +25,7 @@ if (!Helper::getUserLogin()->isLogin()) {
                     </tr>
                     <tr>
                         <td class="title">Rute</td>
-                        <td><?php echo $travel->asal . ' - ' . $travel->tujuan ?></td>
+                        <td><?php echo $travel->idKotaAsal->kota . ' - ' . $travel->idKotaTujuan->kota ?></td>
                     </tr>
                     <tr>
                         <td class="title">Tanggal</td>
@@ -37,7 +37,7 @@ if (!Helper::getUserLogin()->isLogin()) {
                     </tr>
                     <tr>
                         <td class="title">Sisa Seat</td>
-                        <td><?php echo $travel->jumlah_seat - Travel::model()->getSeatTerpakai($travel->id, $tanggal) . ' dari ' . $travel->jumlah_seat . ' seat' ?></td>
+                        <td><?php echo $travel->idTravelSeat->jumlah - Travel::model()->getSeatTerpakai($travel->id, $tanggal) . ' dari ' . $travel->idTravelSeat->jumlah . ' seat' ?></td>
                     </tr>
                 </table>
             </div>
@@ -54,8 +54,8 @@ if (!Helper::getUserLogin()->isLogin()) {
                                 <?php echo CHtml::dropDownList('seat_list', '', $listKosong, array('multiple'=>'multiple','style'=>'width:"10px"','data-selected-text-format'=>"count",'data-width'=>'120px','class'=>'required'))?>
                                         </td>
                                         <td>
-                                <?php if($travel->gambar_seat!='' || true){?>
-                                        <img src="<?php echo Yii::app()->baseUrl.'/'.($travel->gambar_seat) ?>" width="150px" style="text-align: right">
+                                <?php if($travel->idTravelSeat->gambar!='' || true){?>
+                                        <img src="<?php echo Yii::app()->baseUrl.'/'.($travel->idTravelSeat->gambar) ?>" width="150px" style="text-align: right">
                                 <?php }?>
                                         </td>
                                     </tr>
@@ -106,7 +106,7 @@ if (!Helper::getUserLogin()->isLogin()) {
         <?php
         $this->widget('bootstrap.widgets.TbButton', array(
             'type' => 'primary',
-            'label' => 'Order Sekarang',
+            'label' => 'Pesan Sekarang',
             'buttonType' => 'submit'
         ));
         ?>

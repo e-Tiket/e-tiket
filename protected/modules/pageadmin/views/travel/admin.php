@@ -25,7 +25,7 @@ $this->menu=array(
                 'label'=>'Tambah Travel',
                 'url'=>Yii::app()->createUrl('pageadmin/travel/create'),
                 'type'=>'primary',
-                'htmlOptions'=>array('target' => 'ajax-modal','class'=>'modal-large')
+                'htmlOptions'=>array('target' => 'ajax-modal')
         )); ?>    
             </div>
 </div>
@@ -38,8 +38,7 @@ $this->menu=array(
 </div>
 </div>
 
-<?php 
-$this->widget('MyCGridView', array(
+<?php $this->widget('MyCGridView', array(
 	'id'=>'travel-grid',
 	'dataProvider'=>$model->search(Yii::app()->request->getQuery('Travel',array())),
 	//'filter'=>$model,
@@ -49,17 +48,17 @@ $this->widget('MyCGridView', array(
                     'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
                     'htmlOptions'=>array('align'=>'center','style'=>'width: 5%')
                 ),
-		'agen::Agen',
-		'harga::Harga',
-		'asal::Asal',
-		'tujuan::Tujuan',
+		'kota_asal::Kota Asal',
+		'kota_tujuan::Kota Tujuan',
 		'mobil::Mobil',
+		'harga::Harga',
 		'jam_berangkat::Jam Berangkat',
 		'jam_sampai::Jam Sampai',
-		'jumlah_seat::Jumlah Seat',
 		/*
 		'id_agen_travel::Id Agen Travel',
 		'keterangan::Keterangan',
+		'is_active::Is Active',
+		'id_travel_seat::Id Travel Seat',
 		*/
 		array(
                     'class'=>'MyCButtonColumn',
@@ -69,7 +68,7 @@ $this->widget('MyCGridView', array(
                             'url' => 'Yii::app()->createUrl("pageadmin/travel/view/", array("id"=>$data["id"]))',
                         ),
                         'update'=>array(
-                            'options'=>array('target'=>'ajax-modal','title'=>'Edit','class'=>'modal-large'),
+                            'options'=>array('target'=>'ajax-modal','title'=>'Edit'),
                             'url' => 'Yii::app()->createUrl("pageadmin/travel/update/", array("id"=>$data["id"]))',
                         ),
                         'delete'=>array(
@@ -80,3 +79,10 @@ $this->widget('MyCGridView', array(
 		),
 	),
 )); ?>
+
+
+ <?php 
+    $this->renderPartial('_search',array(
+            'model'=>$model,
+    )); 
+    ?>    

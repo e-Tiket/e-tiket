@@ -71,13 +71,7 @@ class TravelController extends MyAdminController
 //                    $this->show_array($_FILES);exit;
 			$model->attributes=$_POST['Travel'];
                         $is_success=$model->save();
-                        $model->gambar_seat=CUploadedFile::getInstance($model,'gambar_seat');
-                        if($is_success && $model->gambar_seat!=null)
-                        {
-                            $is_success=$model->gambar_seat->saveAs("upload/travel/".$model->id.'_'.$model->gambar_seat->name);
-                            $model->gambar_seat="upload/travel/".$model->id.'_'.$model->gambar_seat->name;
-                            $model->save();
-                        }
+                        
                         $this->notice($is_success,'Travel','create');
 			if($is_success){
 				$this->redirect(array('view','id'=>$model->id));
@@ -111,23 +105,11 @@ class TravelController extends MyAdminController
 
 		if(isset($_POST['Travel']))
 		{
-                        $gambar=$model->gambar_seat;
 			$model->attributes=$_POST['Travel'];
                         $is_success=$model->save();
                         $this->notice($is_success,'Travel','update');
 			if($is_success){
-                            $model->gambar_seat=CUploadedFile::getInstance($model,'gambar_seat');
-                            if($model->gambar_seat!=null)
-                            {
-                                if(file_exists($gambar)){
-                                    unlink($gambar);
-                                }
-                                $is_success=$model->gambar_seat->saveAs("upload/travel/".$model->id.'_'.$model->gambar_seat->name);
-                                $model->gambar_seat="upload/travel/".$model->id.'_'.$model->gambar_seat->name;
-                                $model->save();
-                            }
                             $this->redirect(array('view','id'=>$model->id));
-                                
                         }
 		}
                 if($_GET['ajax'])

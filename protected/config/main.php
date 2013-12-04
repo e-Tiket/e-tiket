@@ -29,7 +29,12 @@ return array(
 //                        ),
 		),
                 'pageadmin',
-                'blog',
+                'blog'=>array(
+                    'modules'=>array(
+                        'pageadmin'
+                    ),
+                    
+                ),
                 'gallery'
 	),
 

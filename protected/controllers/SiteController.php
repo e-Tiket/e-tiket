@@ -94,7 +94,7 @@ class SiteController extends MyController
                         break;
                     case 'travel':
                         $param['travel']=  Travel::model()->getJadwal(Helper::getQuery('asal'), 
-                                Helper::getQuery('tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('tanggal_sebelum'),Helper::getQuery('jumlah'));
+                                Helper::getQuery('tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('jumlah'));
                         break;
                         break;
                 }

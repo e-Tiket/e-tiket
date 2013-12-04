@@ -2,7 +2,7 @@
     <div class="span3" >
         <div class="search">
             <div class="tabbable"> <!-- Only required for left/right tabs -->
-                <div class="tab-content" style="overflow-y: visible;width: fit-content">
+                <div class="tab-content" style="overflow: hidden">
                     <ul class="nav nav-tabs">
                         <li class="<?php echo ($search_type=='flight' || $search_type=='')?'active':''?>"><a href="#tab1" data-toggle="tab">Pesawat</a></li>
                         <li class="<?php echo ($search_type=='travel')?'active':''?>"><a href="#tab2" data-toggle="tab">Travel</a></li>
