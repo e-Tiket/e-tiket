@@ -1,7 +1,7 @@
 <div class="checkout-outer" id="">
         <div class="checkout-header login-form"><h4><i class='icon icon-user'></i> Login</h4></div>
         <div class="checkout-content login-form" >
-            <form name="login-form" action="<?php echo Yii::app()->createUrl('user/login', array('urlReturn'=>$urlReturn))?>" method="POST">
+            <form name="login-form" action="<?php echo Yii::app()->createUrl('user/login', array('returnUrl'=>$returnUrl))?>" method="POST">
                 <table style="width: 100%">
                     <tr>
                         <td>Username</td>
@@ -28,7 +28,7 @@
         </div>
         <div class="checkout-header daftar-form"><h4><i class='icon icon-user'></i> Daftar</h4></div>
         <div class="checkout-content daftar-form">
-            <form name="daftar-form" action="<?php echo Yii::app()->createUrl('user/daftar', array('urlReturn'=>$urlReturn))?>" method="POST">
+            <form name="daftar-form" action="<?php echo Yii::app()->createUrl('user/daftar', array('returnUrl'=>$returnUrl))?>" method="POST">
                 <table>
                     <tr>
                         <td>Username</td>

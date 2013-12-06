@@ -120,12 +120,15 @@ class GalleryPhotoController extends AdminGalleryController
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+                $path_file=$model->path_file;
 		if(isset($_POST['GalleryPhoto']))
 		{
 			$oldModel=$this->loadModel($id);
                         
                         $model->attributes=$_POST['GalleryPhoto'];
+                        if($model->path_file=='' || $model->path_file==null){
+                            $model->path_file=$path_file;
+                        }
                         $is_success=$model->save();
                         $model->path_file=CUploadedFile::getInstance($model,'path_file');
                         if($is_success && $model->path_file!=null)

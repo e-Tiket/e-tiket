@@ -16,6 +16,8 @@ class MainMenu extends CMenu{
                     array('title'=>'Seat Travel','url'=>'pageadmin/travelSeat','access'=>array('admin'=>1)),
                     array('title'=>'Custommer','url'=>'pageadmin/custommer','access'=>array('admin'=>1)),
                     array('title'=>'Kapal','url'=>'pageadmin/kapal','access'=>array('admin'=>1)),
+                    array('title'=>'Kategori Gallery','url'=>'gallery/admin/gallery','access'=>array('admin'=>1)),
+                    array('title'=>'Gallery Photo','url'=>'gallery/admin/galleryPhoto','access'=>array('admin'=>1)),
                     array('title'=>'Kategori Artikel','url'=>'blog/pageadmin/cmsKategori','access'=>array('admin'=>1)),
                     array('title'=>'Artikel','url'=>'blog/pageadmin/cmsArtikel','access'=>array('admin'=>1)),
 //                    array('title'=>'Kelas','url'=>'kelas','access'=>array('admin'=>1)),

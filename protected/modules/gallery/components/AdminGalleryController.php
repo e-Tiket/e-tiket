@@ -10,7 +10,7 @@
  *
  * @author fendi
  */
-class AdminGalleryController extends BackendController{
+class AdminGalleryController extends MyAdminController{
     function getModuleUrl(){
         return $this->getModule()->getName();
     }

@@ -2,7 +2,7 @@
 /** @var Custommer $user */
 if (!Helper::getUserLogin()->isLogin()) {
         ?><div class="alert alert-info">Untuk mempermudah pembelian tiket, silakan 
-            <a href="<?php echo Yii::app()->createUrl('user/login',array('urlReturn'=>  Yii::app()->createUrl("travel/travelOrder", array("id"=>Helper::getQuery("id"),"tanggal"=>Helper::getQuery("tanggal")))))?>" target="ajax-modal" class=""><b>login</b></a>
+            <a href="<?php echo Yii::app()->createUrl('user/login',array('returnUrl'=>  Yii::app()->createUrl("travel/travelOrder", array("id"=>Helper::getQuery("id"),"tanggal"=>Helper::getQuery("tanggal")))))?>" target="ajax-modal" class=""><b>login</b></a>
             terlebih dahulu!</div><?php
 }
 ?>
@@ -99,21 +99,25 @@ if (!Helper::getUserLogin()->isLogin()) {
             <label class="control-label">Keterangan</label>
             <div class="controls">
                 <textarea name="order[keterangan]" cols="50" rows="2" class="span4"></textarea>
-            </div>    
+            </div>
+            <input type="hidden" name="action" value="">
         </div>
     </div>
     <div class="modal-footer">
+        <button class="btn btn-primary"
+                onclick="$('input[name=action]').attr('value','keranjang');"><i class="icon-shopping-cart"></i> Tambahkan Ke Keranjang</button>
         <?php
         $this->widget('bootstrap.widgets.TbButton', array(
             'type' => 'primary',
             'label' => 'Pesan Sekarang',
-            'buttonType' => 'submit'
+            'buttonType' => 'submit',
+            'htmlOptions'=>array('onclick'=>"$('input[name=action]').attr('value','order_now');")
         ));
         ?>
         <?php
         $this->widget('bootstrap.widgets.TbButton', array(
             'label' => 'Close',
-            'url' => '#',
+            'url' => Yii::app()->createUrl('site/index',array('tab'=>'travel')),
             'htmlOptions' => array('data-dismiss' => 'modal', 'class' => 'btn btn-warning'),
         ));
         ?></div>    

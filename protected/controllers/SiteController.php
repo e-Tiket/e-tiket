@@ -70,8 +70,7 @@ class SiteController extends MyController
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
-	public function actionIndex()
-	{
+	public function actionIndex(){
                 $param=array(
                     'to'=>'','from'=>'',
                     'tanggal_berangkat'=>'','tanggal_pulang'=>'',
@@ -96,6 +95,8 @@ class SiteController extends MyController
                         $param['travel']=  Travel::model()->getJadwal(Helper::getQuery('asal'), 
                                 Helper::getQuery('tujuan'), Helper::getQuery('tanggal'), Helper::getQuery('jumlah'));
                         break;
+                    default:
+                        $param['bannerList']=  GalleryPhoto::model()->getPhotoByKategori(1);
                         break;
                 }
 //                $destination=$this->requestAPI("https://api.master18.tiket.com/flight_api/all_airport?1=1");
@@ -105,7 +106,7 @@ class SiteController extends MyController
                 $param['travel']= Travel::model()->findAll();
                 $param['search_type']=isset($_GET['search_type'])?$_GET['search_type']:Helper::getQuery('tab');
 		$this->render('index',$param);
-
+                
 	}
 
 	/**
@@ -151,5 +152,19 @@ class SiteController extends MyController
         public function actionPembayaran(){
             $this->render('pembayaran');
         }
-        
+        public function actionHapusTiket($id_detail,$type){
+            $is_successed=false;
+            if($type=='travel'){
+                $is_successed=TravelOrder::model()->deleteByPk($id_detail)>0;
+            }
+            $this->notice2($is_successed, "Tiket $type berhasil dihapus", "Tiket $type gagal dihapus");
+            $this->redirect(array('site/index'));
+        }
+        public function actionCheckout(){
+//            if($this->isLogin())
+            Yii::app()->user->isCustommer();
+        }
+        public function actionSetOrderSession($id){
+            Yii::app()->session['id_order']=$id;
+        }
 }

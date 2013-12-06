@@ -53,6 +53,11 @@
                                 'travel'=>$travel
                             ));
                         break;
+                    default:    
+                            $this->renderPartial('home',array(
+                                'bannerList'=>$bannerList
+                            ));
+                        break;
                         
                 }
         ?>

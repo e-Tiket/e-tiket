@@ -10,7 +10,7 @@
  *
  * @author fendi
  */
-class FrontendGalleryController extends FrontendController{
+class FrontendGalleryController extends MyController{
     function getGalleryPath($gambar=null){
         if($gambar==null)
             return 'upload/gallery';

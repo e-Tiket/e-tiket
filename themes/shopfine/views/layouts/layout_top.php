@@ -195,53 +195,48 @@ $().ready(function() {
 
 						<div class="btn-group">
 							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-							    <i class="icon-shopping-cart"></i> 3 Items
+							    <i class="icon-shopping-cart"></i> <?php echo count($this->orderDetailForMainView)?> Items
 							    <span class="caret"></span>
 							</a>
 							<div class="dropdown-menu cart-content pull-right">
 								<table class="table-cart">
 									<tbody>
-									<tr>
+                                                                        <?php 
+                                                                        $total=0;
+                                                                        foreach($this->orderDetailForMainView as $orderDetail):?>    
+                                                                            <tr>
 										<td class="cart-product-info">
-											<a href="#"><img src="img/72x72.jpg" alt="product image"></a>
 											<div class="cart-product-desc">
-												<p><a class="invarseColor" href="#">Foliomania the designer portfolio brochure</a></p>
+                                                                                                <p><?php echo "<b>".  strtoupper($orderDetail['type'])."</b> ".$orderDetail['rute']?></p>
 												<ul class="unstyled">
-													<li>Available: Yes</li>
-													<li>Color: Black</li>
+                                                                                                    <li><?php echo "Kendaraan: ".  ucfirst($orderDetail['kendaraan'])?></li>
+                                                                                                    <li><?php echo "Tanggal Berangkat: ". Helper::parseDateTimeFormat($orderDetail['tanggal_berangkat'])?></li>
+                                                                                                    <li><?php echo "Durasi: ".  ucfirst($orderDetail['durasi'])?></li>
 												</ul>
 											</div>
 										</td>
 										<td class="cart-product-setting">
-											<p><strong>1x-$500.00</strong></p>
-											<a href="#" class="remove-pro" rel="tooltip" data-title="Delete"><i class="icon-trash"></i></a>
+                                                                                        <p><strong><?php echo "$orderDetail[jumlah_tiket]x".  Helper::rupiah($orderDetail['harga_satuan'],false)?></strong></p>
+                                                                                        <a href="<?php echo Yii::app()->createUrl('site/hapusTiket',
+                                                                                                array('type'=>$orderDetail['type'],'id_detail'=>$orderDetail['id_detail']))?>" 
+                                                                                                class="remove-pro" rel="tooltip" data-title="Delete"
+                                                                                                onclick="return confirm('Apakah anda yakin?')"><i class="icon-trash"></i></a>
 										</td>
 									</tr>
-									<tr>
-										<td class="cart-product-info">
-											<a href="#"><img src="img/72x72.jpg" alt="product image"></a>
-											<div class="cart-product-desc">
-												<p><a class="invarseColor" href="#">Foliomania the designer portfolio brochure</a></p>
-												<ul class="unstyled">
-													<li>Available: Yes</li>
-													<li>Color: Black</li>
-												</ul>
-											</div>
-										</td>
-										<td class="cart-product-setting">
-											<p><strong>2x-$450.00</strong></p>
-											<a href="#" class="remove-pro" rel="tooltip" data-title="Delete"><i class="icon-trash"></i></a>
-										</td>
-									</tr>
+                                                                        <?php 
+                                                                        $total+=$orderDetail['biaya'];
+                                                                        endforeach;?>    
+									
 								</tbody>
 								<tfoot>
 									<tr>
 										<td class="cart-product-info">
-											<a href="#" class="btn btn-small">Vew cart</a>
-											<a href="#" class="btn btn-small btn-primary">Checkout</a>
+											<a href="<?php echo Yii::app()->createUrl('site/viewCart')?>" onclick="return confirm('Apakah anda yakin?')"class="btn btn-small btn-danger">Clear All</a>
+											<a href="<?php echo Yii::app()->createUrl('site/viewCart')?>" class="btn btn-small">View cart</a>
+                                                                                        <a href="<?php echo Yii::app()->createUrl('site/checkout')?>" class="btn btn-small btn-primary">Checkout</a>
 										</td>
 										<td>
-											<h3>TOTAL<br>$1,598.30</h3>
+                                                                                    <h3>TOTAL<br><?php echo Helper::rupiah($total)?></h3>
 										</td>
 									</tr>
 								</tfoot>
@@ -313,7 +308,7 @@ $().ready(function() {
                 ?>    
                 <?php if($isShowMessage):?>    
             	<div class="alert <?php echo $alert;?>">
-                	<button type="button" class="close" data-dismiss="alert"> x </button>
+                	<button type="button" class="close" data-dismiss="alert">&times;</button>
                         <?php echo $pesan?>
                 </div><!--alert-->
                 <?php endif;?>

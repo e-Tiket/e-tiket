@@ -10,6 +10,7 @@
  * @property string $nama
  * @property string $deskripsi
  * @property string $path_file
+ * @property string $url
  *
  * The followings are the available model relations:
  * @property Gallery $idGallery
@@ -45,11 +46,11 @@ class GalleryPhoto extends MyCActiveRecord
 			array('id_gallery', 'required'),
 			array('id_gallery, rank', 'numerical', 'integerOnly'=>true),
 			array('nama', 'length', 'max'=>512),
-			array('path_file', 'length', 'max'=>128),
+			array('path_file,url', 'length', 'max'=>255),
 			array('deskripsi', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, id_gallery, rank, nama, deskripsi, path_file', 'safe', 'on'=>'search'),
+			array('id, id_gallery, rank, nama, deskripsi, path_file,url', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,6 +78,7 @@ class GalleryPhoto extends MyCActiveRecord
 			'nama' => 'Nama',
 			'deskripsi' => 'Deskripsi',
 			'path_file' => 'Nama File',
+			'url' => 'Url',
 		);
 	}
 
@@ -108,6 +110,7 @@ class GalleryPhoto extends MyCActiveRecord
 		$criteria->compare('nama',$this->nama,true);
 		$criteria->compare('deskripsi',$this->deskripsi,true);
 		$criteria->compare('path_file',$this->path_file,true);
+		$criteria->compare('url',$this->url,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -117,19 +120,10 @@ class GalleryPhoto extends MyCActiveRecord
             return $this->findAll();
         }
         
-        public function getSort(){
-            return false;
-        }
-        public function getPagination(){
-            return false;
-        }
-        public function getTotalItemCount(){
-            return false;
-        }
-        public function getItemCount(){
-            return false;
-        }
         public function getKeys(){
             return array('path_file');
+        }
+        public function getPhotoByKategori($id_kategori){
+            return GalleryPhoto::model()->findByAttributes(array('id_gallery'=>1));
         }
 }

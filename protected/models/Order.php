@@ -13,7 +13,6 @@
  * @property string $waktu
  * @property integer $total_tagihan
  * @property string $status
- * @property string $jenis_order
  *
  * The followings are the available model relations:
  * @property FlightOrder[] $flightOrders
@@ -49,19 +48,17 @@ class Order extends MyCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('waktu, jenis_order', 'required'),
+			array('waktu', 'required'),
 			array('bayar_total, id_custommer, total_tagihan', 'numerical', 'integerOnly'=>true),
 			array('bayar_via', 'length', 'max'=>32),
 			array('bayar_bank', 'length', 'max'=>20),
 			array('pay_keterangan', 'length', 'max'=>50),
 			array('status', 'length', 'max'=>10),
-			array('jenis_order', 'length', 'max'=>6),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, bayar_via, bayar_bank, bayar_total, pay_keterangan, id_custommer, waktu, total_tagihan, status, jenis_order', 'safe', 'on'=>'search'),
+			array('id, bayar_via, bayar_bank, bayar_total, pay_keterangan, id_custommer, waktu, total_tagihan, status', 'safe', 'on'=>'search'),
 		);
 	}
-
 	/**
 	 * @return array relational rules.
 	 */
@@ -92,7 +89,6 @@ class Order extends MyCActiveRecord
 			'waktu' => 'Waktu',
 			'total_tagihan' => 'Total Tagihan',
 			'status' => 'Status',
-			'jenis_order' => 'Jenis Order',
 		);
 	}
 
@@ -127,7 +123,6 @@ class Order extends MyCActiveRecord
 		$criteria->compare('waktu',$this->waktu,true);
 		$criteria->compare('total_tagihan',$this->total_tagihan);
 		$criteria->compare('status',$this->status,true);
-		$criteria->compare('jenis_order',$this->jenis_order,true);
 
 		return new MyCActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -164,7 +159,7 @@ class Order extends MyCActiveRecord
                 $counterSql->select='count(*) as jumlah';
                 $jumlah=$counterSql->select('count(*) as jumlah')->queryRow();
                 $data->setTotalItemCount($jumlah['jumlah']);
-                                $data->setSort(array('attributes'=>array('id','bayar_via','bayar_bank','bayar_total','pay_keterangan','id_custommer','waktu','total_tagihan','status','jenis_order')));
+                                $data->setSort(array('attributes'=>array('id','bayar_via','bayar_bank','bayar_total','pay_keterangan','id_custommer','waktu','total_tagihan','status')));
                 return $data;
 	}
 }

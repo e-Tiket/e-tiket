@@ -14,6 +14,7 @@ class TravelController extends MyController{
     public function actionTravelOrder($id,$tanggal){
 //        $this->show_array($_POST);exit;
         if($_POST){
+//            Helper::show_array($_POST);exit;
             $is_success=false;
             $travel=Travel::model()->findByPk($id);
             $travelOrder=new TravelOrder();
@@ -28,25 +29,28 @@ class TravelController extends MyController{
                     $seat->seat_ke=$seat_ke;
                     $seat->save();
                 }
-                $order=new Order();
-                if(Helper::getUserLogin()->isLogin() && Helper::getUserLogin()->isCustommer()){
-                    $custommer=  Helper::getUserLogin()->getUserProfile();
-                    $order->id_custommer=$custommer->id;
-                }
-                $order->total_tagihan=$travel->harga*$travelOrder->jumlah_seat;
-                $order->jenis_order='travel';
-                $order->save(false);
-                $travelOrder->id_order=$order->id;
+                $id_order=  $this->getOrderId(true);
+                
+                $travelOrder->id_order=$id_order;
                 $travelOrder->save();
+                
+                $this->updateTotalTagihanOrder($travel->harga*$travelOrder->jumlah_seat);
                 $is_success=true;
             }
-            $this->notice2($is_success, "Pemesanan travel berhasil dilakukan", "Pemesanan travel gagal dilakukan");
-            
             if($is_success){
-                if(Helper::getUserLogin()->isLogin() && Helper::getUserLogin()->isCustommer()){
-                    $this->redirect(Yii::app()->createUrl('site/orderHistory'));
-                }else
-                    $this->redirect(Yii::app()->createUrl('site/pembayaran',array('id'=>$order->id)));
+                if($_POST['action']=='order_now'){
+                    $this->notice2($is_success, "Pemesanan travel berhasil dilakukan", "Pemesanan travel gagal dilakukan");
+                    if(Helper::getUserLogin()->isLogin() && Helper::getUserLogin()->isCustommer()){
+                        $this->redirect(Yii::app()->createUrl('site/orderHistory'));
+                        $this->clearOrder();
+                    }else{
+                        $this->redirect(Yii::app()->createUrl('site/pembayaran',array('id'=>$order->id)));
+                    }
+                }else{
+                    //add to cart
+                    $this->notice2($is_success, "Pemesanan travel berhasil ditambahkan ke keranjang", "Pemesanan travel gagal ditambahkan");
+                    $this->redirect(Yii::app()->createUrl('site/index'));
+                }
             }else{
                 $travelOrder->delete();
                 $order->delete();

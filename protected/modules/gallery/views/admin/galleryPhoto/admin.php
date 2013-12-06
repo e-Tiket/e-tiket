@@ -32,7 +32,7 @@
                     
                     <div class="mediamgr_content">
 						
-                    <small><em>Tips: Hold Control key to select multiple items (Windows only).</em></small>
+                    <!--<small><em>Tips: Hold Control key to select multiple items (Windows only).</em></small>-->
                         
                     <br /><br />
                     	<?php
@@ -53,9 +53,9 @@
                 	<div class="mediamgr_rightinner">
                         <h4>Browse Files</h4>
                         <ul class="menuright">
-                            <li class="<?php echo $this->getQuery('GalleryPhoto[id_gallery]')==''?'current':''?>"><a href="#">All Files</a></li>
+                            <li class="<?php echo Helper::getQuery('GalleryPhoto[id_gallery]')==''?'current':''?>"><a href="#">All Files</a></li>
                             <?php foreach($galleryList as $gallery):?>
-                            <li class="<?php echo $this->getQuery('GalleryPhoto[id_gallery]')==$gallery['id']?'current':''?>">
+                            <li class="<?php echo Helper::getQuery('GalleryPhoto[id_gallery]')==$gallery['id']?'current':''?>">
                                 <a href="<?php echo Yii::app()->createUrl(
                                         $this->getModuleUrl().'/admin/galleryPhoto/admin',
                                         array('GalleryPhoto[id_gallery]'=>$gallery['id']))?>">

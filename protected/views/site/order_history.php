@@ -14,7 +14,6 @@
                 ),
                 'waktu::Waktu',
 		'status::Status',
-		'jenis_order::Jenis Order',
             array(
                     'header'=>'Total Tagihan',
                     'value'=>'Helper::rupiah($data["total_tagihan"],false)',

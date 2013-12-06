@@ -16,15 +16,19 @@ class MyController extends ParentController {
     var $title = "Sistem Reservasi Futsal";
     var $checkLogin = true;
     var $tahunAjaran = "";
-
+    var $param=array();
+    var $orderDetailForMainView=array();
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
         Yii::app()->theme = "shopfine";
         if (empty($_GET['ajax'])) {
             $_GET['ajax'] = null;
         }
+        $this->orderDetailForMainView=  OrderDetail::model()->getDetailOrder($this->getOrderId());
     }
-
+    function render($view, $data = null, $return = false) {
+        parent::render($view, $data, $return);
+    }
     function init() {
         parent::init();
     }
@@ -49,15 +53,7 @@ class MyController extends ParentController {
         return Yii::app()->user->isAdmin();
     }
 
-    public function isGuru() {
-        return Yii::app()->user->isGuru();
-    }
-
-    function rupiah($nominal) {
-        return Helper::rupiah($nominal);
-    }
-    
-    function isLogin(){
+    function isUserLogin(){
         return true;
     }
     function pageForCustommerOnly($returnUrl='',$param=array()){
@@ -65,8 +61,55 @@ class MyController extends ParentController {
             return true;
         }else{
             $this->noticeInfo("Anda harus login untuk mengakses halaman ini");
-            $this->redirect(Yii::app()->createUrl('user/login',array('urlReturn'=>  Yii::app()->createUrl($returnUrl,$param))));
+            $this->redirect(Yii::app()->createUrl('user/login',array('returnUrl'=>  Yii::app()->createUrl($returnUrl,$param))));
         }
+    }
+    public function getOrderId($isCreateNewOrder=false){
+        $order=$this->getOrder($isCreateNewOrder);
+        if($order==null) return null;
+        else
+        return $order->id;
+    }
+    /**
+     * 
+     * @return Order
+     */
+    public function getOrder($isCreateNewOrder=false){
+        if(Yii::app()->session['id_order']==null && $isCreateNewOrder){
+            $order=new Order();
+            if(Helper::getUserLogin()->isLogin() && Helper::getUserLogin()->isCustommer()){
+                $custommer=  Helper::getUserLogin()->getUserProfile();
+                $order->id_custommer=$custommer->id;
+            }
+            $order->save(false);
+            Yii::app()->session['id_order']=$order->id;
+        }else{
+            $order= Order::model()->findByPk(Yii::app()->session['id_order']);
+            if($order==null && $isCreateNewOrder){
+                Yii::app()->session['id_order']=null;
+                return $this->getOrder($isCreateNewOrder);
+            }
+        }
+        return $order;
+    }
+    /**
+     * 
+     * @param type $tagihan
+     */
+    public function updateTotalTagihanOrder($tagihan){
+        $order=$this->getOrder();
+        $order->total_tagihan+=$tagihan;
+        if($tagihan>0){
+            $order->waktu = new CDbExpression('NOW()');
+        }
+        return $order->save(false);
+    }
+    public function clearOrder(){
+        if(Yii::app()->session['id_order']!=null){
+            $order=  Order::model()->findByPk(Yii::app()->session['id_order']);
+            $order->delete();
+        }
+        Yii::app()->session['id_order']=null;
     }
 }
 

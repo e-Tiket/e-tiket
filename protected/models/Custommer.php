@@ -126,6 +126,7 @@ class Custommer extends MyCActiveRecord
 	}
         public function login(Custommer $custommer){
                 $_identity=new UserIdentity($custommer->username,$custommer->password);
+                $_identity->type='custommer';
                 $_identity->authenticate('custommer');
 		if($_identity->errorCode===UserIdentity::ERROR_NONE)
 		{

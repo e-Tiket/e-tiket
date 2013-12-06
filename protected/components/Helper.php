@@ -28,6 +28,9 @@ class Helper {
     public static function getQuery($name,$defaultValue=null){
          return Yii::app()->request->getQuery($name, $defaultValue);
     }
+    public static function getPost($name,$defaultValue=null){
+         return Yii::app()->request->getPost($name, $defaultValue);
+    }
     
     public static function generateGetParam($data){
         $result='';
@@ -93,8 +96,12 @@ class Helper {
             return '';
         $parse=  explode(' ', $datetimeMysqlFormat);
         $parseTnggal=  explode('-', $parse[0]);
-        $jam=  explode(':', $parse[1]);
-        return "$parseTnggal[2] ".Helper::getBulan($parseTnggal[1])." $parseTnggal[0] $jam[0]:$jam[1]";
+        $result="$parseTnggal[2] ".Helper::getBulan($parseTnggal[1]);
+        if(isset($parse[1])){
+            $jam=  explode(':', $parse[1]);
+            $result.=" $parseTnggal[0] $jam[0]:$jam[1]";
+        }
+        return $result;
     }
     public static function dayOfWeek($day){
         $data=array(
